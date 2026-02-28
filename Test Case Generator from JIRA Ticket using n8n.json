@@ -1,0 +1,155 @@
+{
+  "name": "AI_Agent_02_TestGen_Creater_Our_PRD",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -288,
+        -48
+      ],
+      "id": "203c9de1-08cd-464a-9796-e8cb04406eca",
+      "name": "When chat message received",
+      "webhookId": "6a77acca-5517-41fc-aca4-4217b0f8ddd0"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": ""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -16,
+        -48
+      ],
+      "id": "f2d246ec-2c99-456b-b2e1-a5938c2798a9",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-safeguard-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        176
+      ],
+      "id": "aa61f9b7-1923-4a73-adab-1649501ab80a",
+      "name": "Brain",
+      "credentials": {
+        "groqApi": {
+          "id": "KkeSuF0WGA7cV7Up",
+          "name": "Groq account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "https://docs.google.com/document/d/1ovkGTXDLT4p0I1n3xTgQMAVEhokGuW5j-7S_hOe2z4Q/edit?usp=sharing"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        64,
+        176
+      ],
+      "id": "0a679adb-a65c-487c-9fcc-5320a7ea0461",
+      "name": "READ_PRD",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "debMWXhuKLDEZB6p",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "issueKey": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Issue_Key', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.jiraTool",
+      "typeVersion": 1,
+      "position": [
+        192,
+        176
+      ],
+      "id": "efcff2e3-5f9d-4ea0-8217-014a1ccd576f",
+      "name": "READ_JIRA",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "NAuAooS0NyzjxfSJ",
+          "name": "Jira SW Cloud account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brain": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "READ_PRD": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "READ_JIRA": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "4234ea08-e64a-4333-89e6-078be9e6db2b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fc50f456203bc00457ead88f779ee9f0353785db81164d78bc8fd65c8917d943"
+  },
+  "id": "iEMnEu86mmWpq5iZ",
+  "tags": []
+}

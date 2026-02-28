@@ -1,0 +1,136 @@
+{
+  "name": "AI_Testing_001",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -336,
+        -144
+      ],
+      "id": "eca51ce8-886d-44e7-90a3-a2bb39272489",
+      "name": "When chat message received",
+      "webhookId": "b0e723df-da60-44e5-ad60-aa84ae91f15f"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a Senior QA Engineer specializing in bug analysis.\n\nYour task is to analyze application error logs and generate a structured bug report.\n\nSTRICT RULES:\n- Use ONLY the information present in the provided log data.\n- DO NOT assume or invent missing details.\n- If any information is not available, write: [UNKNOWN]\n- Be precise and professional.\n- Do not add explanations outside the required format.\n\nAnalyze the following application error log and generate a structured bug report.\n\nERROR LOG:\n{{ $json.error_log }}\n\nBUG REPORT FORMAT:\n\nBug Title:\n<Concise summary of the issue>\n\nSeverity:\n<Critical | High | Medium | Low based only on log impact>\n\nModule/Component:\n<Identify from log or write [UNKNOWN]>\n\nEnvironment:\n<If present in log, else [UNKNOWN]>\n\nSteps to Reproduce:\n1. <Step derived from log>\n2. <Step>\n3. <Step>\n\nExpected Result:\n<What should have happened>\n\nActual Result:\n<What actually happened according to log>\n\nError Message:\n<Exact error message from log>\n\nLog Timestamp:\n<Extract if available>\n\nConfidence Level:\n<High | Medium | Low based on log completeness>\n\nIMPORTANT:\n- Use ONLY the provided log.\n- If unsure, write [UNKNOWN].\n- Do NOT fabricate steps.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -128,
+        -144
+      ],
+      "id": "698b4f3d-ebad-482a-b6eb-6ecfa7bf2070",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "moonshotai/kimi-k2-instruct-0905",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        16
+      ],
+      "id": "130255df-5add-475e-a9fd-ee7405f0c240",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "KkeSuF0WGA7cV7Up",
+          "name": "Groq account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "project": {
+          "__rl": true,
+          "value": "10000",
+          "mode": "list",
+          "cachedResultName": "jira_AI"
+        },
+        "issueType": {
+          "__rl": true,
+          "value": "10006",
+          "mode": "list",
+          "cachedResultName": "Bug"
+        },
+        "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.jiraTool",
+      "typeVersion": 1,
+      "position": [
+        144,
+        16
+      ],
+      "id": "bbebf64c-f85e-4353-88f1-8884929260a4",
+      "name": "Create an issue in Jira Software",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "qbIS1qCs64FFjbXa",
+          "name": "Jira SW Cloud account 4"
+        }
+      },
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an issue in Jira Software": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6e8be058-ccf1-421b-ad28-73958b0afa06",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fc50f456203bc00457ead88f779ee9f0353785db81164d78bc8fd65c8917d943"
+  },
+  "id": "geyC90qHxJ4Sk316",
+  "tags": []
+}
